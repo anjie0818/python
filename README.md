@@ -356,6 +356,7 @@ for key in d:
         print sorted(['bob', 'about', 'Zoo', 'Credit'], cmp_ignore_case)
      ```
      * 返回函数：返回函数可以把一些计算延迟执行。例如，如果定义一个普通的求和函数：
+
      ```
      例如，定义一个函数 f()，我们让它返回一个函数 g，可以这样写：
         def f():
