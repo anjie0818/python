@@ -401,6 +401,29 @@ lxml python 官方文档：http://lxml.de/index.html
    * 解析html 
    * 文件读取
    [跳转脚本](lxml_test.py)
+* 案例：使用XPath的爬虫
+    * 现在我们用XPath来做一个简单的爬虫，我们尝试爬取某个贴吧里的所有帖子，并且将该这个帖子里每个楼层发布的图片下载到本地。[跳转脚本](xpath_spider_tieba.py)
+### JSON模块与JsonPath
+#### Str与Python转换
+json模块提供了四个功能：dumps、dump、loads、load，用于字符串 和 python数据类型间进行转换。
+* 1. json.loads()
+    * 把Json格式字符串解码转换成Python对象 从json到python的类型转化对照如下：
+* 2. json.dumps()
+    * 实现python类型转化为json字符串，返回一个str对象 把一个Python对象编码转换成Json字符串
+* 3. json.dump()
+    * 将Python内置类型序列化为json对象后写入文件
+* 4. json.load()
+    * 读取文件中json形式的字符串元素 转化成python类型
+[跳转脚本](load_jump.py)
+#### 
+队列+线程+爬虫
+[跳转脚本](QiubaiThread.py)
+
+
+
+
+
+
 
     
     
