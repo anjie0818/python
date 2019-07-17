@@ -418,6 +418,8 @@ json模块提供了四个功能：dumps、dump、loads、load，用于字符串 
 #### 
 队列+线程+爬虫
 [跳转脚本](QiubaiThread.py)
+## 动态HTML处理和机器图像识别
+[携程技术中心 - 携程酒店研发部研发经理崔广宇 <爬虫与反爬虫> 技术分享](https://segmentfault.com/a/1190000005840672)
 
 
 
