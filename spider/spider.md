@@ -401,6 +401,135 @@ lxml python 官方文档：http://lxml.de/index.html
    * 解析html 
    * 文件读取
    [跳转脚本](lxml_test.py)
+* 案例：使用XPath的爬虫
+    * 现在我们用XPath来做一个简单的爬虫，我们尝试爬取某个贴吧里的所有帖子，并且将该这个帖子里每个楼层发布的图片下载到本地。[跳转脚本](xpath_spider_tieba.py)
+### JSON模块与JsonPath
+#### Str与Python转换
+json模块提供了四个功能：dumps、dump、loads、load，用于字符串 和 python数据类型间进行转换。
+* 1. json.loads()
+    * 把Json格式字符串解码转换成Python对象 从json到python的类型转化对照如下：
+* 2. json.dumps()
+    * 实现python类型转化为json字符串，返回一个str对象 把一个Python对象编码转换成Json字符串
+* 3. json.dump()
+    * 将Python内置类型序列化为json对象后写入文件
+* 4. json.load()
+    * 读取文件中json形式的字符串元素 转化成python类型
+[跳转脚本](load_jump.py)
+#### 
+队列+线程+爬虫
+[跳转脚本](QiubaiThread.py)
+## 动态HTML处理和机器图像识别
+[携程技术中心 - 携程酒店研发部研发经理崔广宇 <爬虫与反爬虫> 技术分享](https://segmentfault.com/a/1190000005840672)
+### Selenium和PhantomJS
+#### Selenium
+Selenium是一个Web的自动化测试工具，最初是为网站自动化测试而开发的，类型像我们玩游戏用的按键精灵，可以按指定的命令自动操作，不同是Selenium 可以直接运行在浏览器上，它支持所有主流的浏览器（包括PhantomJS这些无界面的浏览器）。
+>可以从 PyPI 网站下载 Selenium库https://pypi.python.org/simple/selenium ，也可以用 第三方管理器 pip用命令安装：sudo pip install selenium
+Selenium 官方参考文档：http://selenium-python.readthedocs.io/index.html
+#### PhantomJS
+PhantomJS 是一个基于Webkit的“无界面”(headless)浏览器，它会把网站加载到内存并执行页面上的 JavaScript，因为不会展示图形界面，所以运行起来比完整的浏览器要高效。
+>PhantomJS 是一个功能完善(虽然无界面)的浏览器而非一个 Python 库，所以它不需要像 Python 的其他库一样安装，但我们可以通过Selenium调用PhantomJS来直接使用。
+在Ubuntu16.04中可以使用命令安装：sudo apt-get install phantomjs
+如果其他系统无法安装，可以从它的官方网站http://phantomjs.org/download.html) 下载。
+PhantomJS 官方参考文档：http://phantomjs.org/documentation
+####  Selenium 和 PhantomJS 结合在一起，就可以运行一个非常强大的网络爬虫了，这个爬虫可以处理 JavaScrip、Cookie、headers，以及任何我们真实用户需要做的事情。
+* 快速入门
+[跳转脚本](Selenium_start.py)
+* 页面操作
+```
+find_element_by_id
+find_elements_by_name
+find_elements_by_xpath
+find_elements_by_link_text
+find_elements_by_partial_link_text
+find_elements_by_tag_name
+find_elements_by_class_name
+find_elements_by_css_selector
+```
+* 鼠标动作链
+有些时候，我们需要再页面上模拟一些鼠标操作，比如双击、右击、拖拽甚至按住不动等，我们可以通过导入 ActionChains 类来做到：
+```python
+#导入 ActionChains 类
+from selenium.webdriver import ActionChains
+
+# 鼠标移动到 ac 位置
+ac = driver.find_element_by_xpath('element')
+ActionChains(driver).move_to_element(ac).perform()
+
+
+# 在 ac 位置单击
+ac = driver.find_element_by_xpath("elementA")
+ActionChains(driver).move_to_element(ac).click(ac).perform()
+
+# 在 ac 位置双击
+ac = driver.find_element_by_xpath("elementB")
+ActionChains(driver).move_to_element(ac).double_click(ac).perform()
+
+# 在 ac 位置右击
+ac = driver.find_element_by_xpath("elementC")
+ActionChains(driver).move_to_element(ac).context_click(ac).perform()
+
+# 在 ac 位置左键单击hold住
+ac = driver.find_element_by_xpath('elementF')
+ActionChains(driver).move_to_element(ac).click_and_hold(ac).perform()
+
+# 将 ac1 拖拽到 ac2 位置
+ac1 = driver.find_element_by_xpath('elementD')
+ac2 = driver.find_element_by_xpath('elementE')
+ActionChains(driver).drag_and_drop(ac1, ac2).perform()
+```
+* 填充表单(select)
+* 弹窗处理
+alert = driver.switch_to_alert()
+* 页面切换
+driver.switch_to.window("this is window name")   
+for handle in driver.window_handles:
+    driver.switch_to_window(handle)
+* 页面前进和后退
+driver.forward()     #前进
+driver.back()        # 后退
+* Cookies
+for cookie in driver.get_cookies():
+    print "%s -> %s" % (cookie['name'], cookie['value'])
+By name   
+driver.delete_cookie("CookieName")   
+all   
+driver.delete_all_cookies()   
+* 页面等待
+> 现在的网页越来越多采用了 Ajax 技术，这样程序便不能确定何时某个元素完全加载出来了。如果实际页面等待时间过长导致某个dom元素还没出来，但是你的代码直接使用了这个WebElement，那么就会抛出NullPointer的异常。
+   * 显式等待
+   ```python
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+    # WebDriverWait 库，负责循环等待
+    from selenium.webdriver.support.ui import WebDriverWait
+    # expected_conditions 类，负责条件出发
+    from selenium.webdriver.support import expected_conditions as EC
+    
+    driver = webdriver.Chrome()
+    driver.get("http://www.xxxxx.com/loading")
+    try:
+        # 页面一直循环，直到 id="myDynamicElement" 出现
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "myDynamicElement"))
+        )
+    finally:
+        driver.quit()
+   ```
+   * 隐式等待
+   ```python
+    from selenium import webdriver
+    
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(10) # seconds
+    driver.get("http://www.xxxxx.com/loading")
+    myDynamicElement = driver.find_element_by_id("myDynamicElement")
+   ```
+案例一：网站模拟登录
+[跳转脚本](Selenium_start.py)
+
+
+
+
 
     
     
