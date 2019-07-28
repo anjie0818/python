@@ -6,7 +6,7 @@
 <a href="/create/">创建</a>
 <ul>
 {%for book in list%}
-    <li>{{book.btitle}}--<a href="/delete{{book.id}}/">删除</a></li>
+    <li><a href="/{{book.id}}/">{{book.btitle}}</a>--<a href="/delete{{book.id}}/">删除</a></li>
 {%endfor%}
 </ul>
 </body>

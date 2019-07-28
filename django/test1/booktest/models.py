@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+# 说明：不需要定义主键列，在生成时会自动添加，并且值为自动增长。
 class BookInfo(models.Model):
     btitle = models.CharField(max_length=20)
     bpub_date = models.DateField()
